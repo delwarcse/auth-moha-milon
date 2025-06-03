@@ -1,11 +1,28 @@
-import { Link } from "react-router";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
+  const navigate= useNavigate();
+  const {signInUser}=useContext(AuthContext);
+
     const handleLogin = e =>{
         e.preventDefault();
         const email=e.target.email.value;
         const password=e.target.password.value;
         console.log(email,password);
+
+        //user sign in
+        signInUser(email,password)
+        .then(result=>{
+          console.log(result.user);
+          //for clean page after login
+          e.target.reset();
+          navigate('/orders');
+        })
+        .catch(error=>{
+          console.log("Error",error.message);
+        })
     }
     return (
 <div className="hero bg-base-200">
